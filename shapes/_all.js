@@ -1,0 +1,16 @@
+require('shapes.shapes_namespace');
+require('shapes.Shape');
+require('shapes.Point');
+require('shapes.Line');
+require('shapes.Polyline');
+require('shapes.Rectangle');
+require('shapes.Square');
+require('shapes.Polygon');
+require('shapes.Arc');
+require('shapes.QuadraticCurve');
+require('shapes.BezierCurve');
+require('shapes.Ellipse');
+require('shapes.Circle');
+require('shapes.Text');
+require('shapes.TextBox');
+require('shapes.Image');

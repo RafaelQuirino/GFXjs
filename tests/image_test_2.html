@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+</head>
+
+<body>
+
+<!--img id="image" src="card_back.jpg" alt="Magic card back" width="220" height="277"-->
+<img id="image" src="card_back.jpg" alt="Magic card back">
+
+<canvas id="myCanvas" width="550" height="276" style="border:1px solid red;">
+Your browser does not support the HTML5 canvas tag.</canvas>
+
+<script>
+document.getElementById("image").onload = function()
+{
+    var c = document.getElementById("myCanvas");
+    var ctx = c.getContext("2d");
+    var img = document.getElementById("image");
+
+    var imgWidth = img.width;
+    var imgHeight = img.height;
+
+    console.log(imgWidth,imgHeight);
+
+    ctx.drawImage(img, 0, 0);
+    var imgData = ctx.getImageData(0, 0, imgWidth, imgHeight);
+    var imgData1 = ctx.getImageData(0, 0, imgWidth, imgHeight);
+    var imgData2 = ctx.getImageData(0, 0, imgWidth, imgHeight);
+    ctx.clearRect(0, 0, imgWidth, imgHeight);
+
+
+    // invert colors
+    for (var i = 0; i < imgData.data.length; i += 4)
+    {
+      imgData1.data[i] = 255 - imgData.data[i];
+      imgData1.data[i+1] = 255 - imgData.data[i+1];
+      imgData1.data[i+2] = 255 - imgData.data[i+2];
+      imgData1.data[i+3] = imgData.data[i+3];
+    }
+
+    // convert to greyscale
+    for (var i = 0; i < imgData.data.length; i += 4)
+    {
+      var c1 = 1, c2 = 1, c3 = 1;
+      var mean =
+        c1*imgData.data[i] + c2*imgData.data[i+1] + c3*imgData.data[i+2];
+      mean /= 3;
+
+      if (mean == 0) mean = 255;
+
+      imgData2.data[i] = mean;
+      imgData2.data[i+1] = mean;
+      imgData2.data[i+2] = mean;
+      imgData2.data[i+3] = imgData.data[i+3];
+    }
+
+    // iterate over all pixels based on x and y coordinates
+    // var data = imgData.data;
+    // for(var y = 0; y < imgHeight; y++) {
+    //   // loop through each column
+    //   for(var x = 0; x < imgWidth; x++) {
+    //     var red = data[((imgWidth * y) + x) * 4];
+    //     var green = data[((imgWidth * y) + x) * 4 + 1];
+    //     var blue = data[((imgWidth * y) + x) * 4 + 2];
+    //     var alpha = data[((imgWidth * y) + x) * 4 + 3];
+    //
+    //     //console.log("(" + red + "," + green + "," + blue + "," + alpha + ")");
+    //
+    //     var mean = (red+green+blue)/3;
+    //
+    //     imgData2.data[((imgWidth * y) + x) * 4] = mean;
+    //     imgData2.data[((imgWidth * y) + x) * 4 + 1] = mean;
+    //     imgData2.data[((imgWidth * y) + x) * 4 + 2] = mean;
+    //     imgData2.data[((imgWidth * y) + x) * 4 + 3] = alpha;
+    //   }
+    // }
+
+    //ctx.drawImage(img, 80, 0);
+    ctx.putImageData(imgData1, 50, 0);
+    ctx.putImageData(imgData2, 300, 0);
+
+    // ctx.fillStyle = "rgba("+0+","+0+","+255+","+(255/255)+")";
+    // ctx.fillRect( 0, 0, c.width, c.height );
+
+    // Trying to put each pixel individually,
+    // iterating over all pixels based on x and y coordinates
+    var data = imgData.data;
+    for(var y = 0; y < imgHeight; y++) {
+      // loop through each column
+      for(var x = 0; x < imgWidth; x++) {
+        var red = data[((imgWidth * y) + x) * 4];
+        var green = data[((imgWidth * y) + x) * 4 + 1];
+        var blue = data[((imgWidth * y) + x) * 4 + 2];
+        var alpha = data[((imgWidth * y) + x) * 4 + 3];
+
+        console.log("(" + red + "," + green + "," + blue + "," + alpha + ")");
+
+        // var mean = (red+green+blue)/3;
+        //
+        // imgData2.data[((imgWidth * y) + x) * 4] = mean;
+        // imgData2.data[((imgWidth * y) + x) * 4 + 1] = mean;
+        // imgData2.data[((imgWidth * y) + x) * 4 + 2] = mean;
+        // imgData2.data[((imgWidth * y) + x) * 4 + 3] = alpha;
+      }
+    }
+};
+</script>
+
+<p><strong>Note:</strong> The canvas tag is not supported in Internet
+Explorer 8 and earlier versions.</p>
+
+</body>
+</html>

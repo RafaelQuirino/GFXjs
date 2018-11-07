@@ -1,0 +1,79 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <style>
+      /*body {
+        margin: 0px;
+        padding: 0px;
+      }*/
+      #myCanvas {
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="myCanvas" width="800" height="400"></canvas>
+    <script>
+      function drawImage(imageObj) {
+
+        var canvas = document.getElementById('myCanvas');
+        var context = canvas.getContext('2d');
+        var imageX = 50;
+        var imageY = 50;
+        var imageWidth = imageObj.width;
+        var imageHeight = imageObj.height;
+
+        context.drawImage(imageObj, imageX, imageY);
+
+        var imageData = context.getImageData(imageX, imageY, imageWidth, imageHeight);
+        var newImage = context.getImageData(imageX, imageY, imageWidth, imageHeight);
+
+        // iterate over all pixels
+        for(var i = 0, n = imageData.length; i < n; i += 4) {
+          var red = imageData.data[i];
+          var green = imageData.data[i+1];
+          var blue = imageData.data[i+2];
+          var alpha = imageData.data[i+3];
+
+          var mean = (red+blue+green)/3;
+
+          newImage.data[i] = 0;//mean;
+          newImage.data[i+1] = 0;//mean;
+          newImage.data[i+2] = 0;//mean;
+          //newImage.data[i+3] = 0;//alpha;
+        }
+
+        context.putImageData(newImage, imageX + imageWidth + 20, imageY);
+        context.putImageData(newImage, imageX + 2*imageWidth + 40, imageY);
+
+        // pick out pixel data from x, y coordinate
+        // var x = 20;
+        // var y = 20;
+        // var red = data[((imageWidth * y) + x) * 4];
+        // var green = data[((imageWidth * y) + x) * 4 + 1];
+        // var blue = data[((imageWidth * y) + x) * 4 + 2];
+        // var alpha = data[((imageWidth * y) + x) * 4 + 3];
+
+        // iterate over all pixels based on x and y coordinates
+        // for(var y = 0; y < imageHeight; y++) {
+        //   // loop through each column
+        //   for(var x = 0; x < imageWidth; x++) {
+        //     var red = data[((imageWidth * y) + x) * 4];
+        //     var green = data[((imageWidth * y) + x) * 4 + 1];
+        //     var blue = data[((imageWidth * y) + x) * 4 + 2];
+        //     var alpha = data[((imageWidth * y) + x) * 4 + 3];
+        //   }
+        // }
+
+      } // function drawImage(imageObj)
+
+      var imageObj = new Image();
+      imageObj.src = 'http://localhost:8080/card_back.jpg';
+
+      imageObj.onload = function() {
+        drawImage(this);
+      };
+
+    </script>
+  </body>
+</html>
